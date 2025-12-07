@@ -9,13 +9,30 @@ export function parseCodeBlocks(text: string): CodeBlock[] {
     const codeBlocks: CodeBlock[] = [];
 
     // Match code blocks with optional filename
-    const codeBlockRegex = /```(\w+)(?:\s+(.+?))?\n([\s\S]*?)```/g;
+    // Updated regex to be more flexible with spacing and optional filename
+    // Match code blocks with optional filename
+    // Robust regex to match code blocks
+    // Captures:
+    // Group 1: Optional language/metadata line (everything after the first ``` until newline)
+    // Group 2: Content
+    const codeBlockRegex = /```(.*?)\r?\n([\s\S]*?)```/g;
 
     let match;
     while ((match = codeBlockRegex.exec(text)) !== null) {
-        const language = match[1];
-        const filename = match[2]?.trim() || generateFilename(language);
-        const content = match[3].trim();
+        const metadata = match[1]?.trim() || "";
+        const content = match[2].trim();
+
+        // Extract language and filename from metadata
+        // Examples: "html index.html", "typescript", "css styles.css", ""
+        const parts = metadata.split(/\s+/);
+        let language = parts[0] || "plaintext";
+        let filename = parts.length > 1 ? parts.slice(1).join(" ") : generateFilename(language);
+
+        // Clean up language if it contains filename like "index.html" being parsed as language
+        if (language.includes('.')) {
+            filename = language;
+            language = filename.split('.').pop() || "plaintext";
+        }
 
         codeBlocks.push({
             language,
@@ -43,30 +60,40 @@ function generateFilename(language: string): string {
     return extensions[language.toLowerCase()] || `file.${language}`;
 }
 
+export function cleanText(text: string): string {
+    // Remove code blocks and replace with a subtle placeholder
+    const codeBlockRegex = /```[\s\S]*?```/g;
+    return text.replace(codeBlockRegex, '').trim();
+}
+
 export function createHTMLPreview(codeBlocks: CodeBlock[]): string {
     const htmlBlock = codeBlocks.find(b => b.language === 'html');
-    const cssBlock = codeBlocks.find(b => b.language === 'css');
-    const jsBlock = codeBlocks.find(b => b.language === 'javascript' || b.language === 'js');
+    const cssBlocks = codeBlocks.filter(b => b.language === 'css');
+    const jsBlocks = codeBlocks.filter(b => b.language === 'javascript' || b.language === 'js');
 
     if (!htmlBlock) {
-        return '<html><body><h1>No HTML content generated yet</h1></body></html>';
+        return '<html><body style="font-family: sans-serif; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; color: #666;"><h1>No HTML content generated yet</h1></body></html>';
     }
 
     let html = htmlBlock.content;
 
     // Inject CSS if present
-    if (cssBlock) {
-        const styleTag = `<style>${cssBlock.content}</style>`;
+    if (cssBlocks.length > 0) {
+        const cssContent = cssBlocks.map(b => b.content).join('\n');
+        const styleTag = `<style>${cssContent}</style>`;
         if (html.includes('</head>')) {
             html = html.replace('</head>', `${styleTag}</head>`);
+        } else if (html.includes('<html>')) {
+            html = html.replace('<html>', `<html><head>${styleTag}</head>`);
         } else {
             html = `<head>${styleTag}</head>${html}`;
         }
     }
 
     // Inject JS if present
-    if (jsBlock) {
-        const scriptTag = `<script>${jsBlock.content}</script>`;
+    if (jsBlocks.length > 0) {
+        const jsContent = jsBlocks.map(b => b.content).join('\n');
+        const scriptTag = `<script>${jsContent}</script>`;
         if (html.includes('</body>')) {
             html = html.replace('</body>', `${scriptTag}</body>`);
         } else {

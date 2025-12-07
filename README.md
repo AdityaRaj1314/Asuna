@@ -1,5 +1,17 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+## Environment Setup
+
+This project uses Google's Gemini AI API. Before running the application, you need to set up your environment variables:
+
+1. Create a `.env` file in the root directory
+2. Add your Gemini API key:
+   ```
+   GEMINI_API_KEY=your_gemini_api_key_here
+   ```
+
+You can obtain a Gemini API key from [Google AI Studio](https://makersuite.google.com/app/apikey).
+
 ## Getting Started
 
 First, run the development server:
