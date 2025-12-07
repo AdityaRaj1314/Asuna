@@ -17,3 +17,5 @@ RUN npx --yes shadcn@latest add --all --yes
 
 # Move the Nextjs app to the home directory and remove the nextjs-app directory
 RUN mv /home/user/nextjs-app/* /home/user/ && rm -rf /home/user/nextjs-app
+
+WORKDIR /home/user
