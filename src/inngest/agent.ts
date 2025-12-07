@@ -11,7 +11,7 @@ export const agent = createAgent({
     }),
 });
 
-export const lifeCoacAgent = inngest.createFunction(
+export const lifeCoachAgent = inngest.createFunction(
     {
         id: "life-coach-agent",
         name: "Life Coach Agent",

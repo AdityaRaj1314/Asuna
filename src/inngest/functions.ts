@@ -9,4 +9,4 @@ export const helloWorld = inngest.createFunction(
   },
 );
 
-export { lifeCoacAgent } from "./agent";
+export { lifeCoachAgent } from "./agent";
