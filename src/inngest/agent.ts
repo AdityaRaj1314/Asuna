@@ -7,7 +7,7 @@ export const agent = createAgent({
     description: "A helpful life coach that assists users with their goals and motivation.",
     system: "You are a supportive and encouraging life coach. Help the user with their questions, offer advice, and keep them motivated.",
     model: gemini({
-        model: "gemini-2.5-flash",
+        model: "gemini-2.0-flash-exp",
     }),
 });
 
