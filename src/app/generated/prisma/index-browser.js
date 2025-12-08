@@ -120,18 +120,38 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
   Serializable: 'Serializable'
 });
 
-exports.Prisma.UserScalarFieldEnum = {
+exports.Prisma.ProjectScalarFieldEnum = {
   id: 'id',
-  email: 'email',
-  name: 'name'
+  name: 'name',
+  userId: 'userId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
-exports.Prisma.PostScalarFieldEnum = {
+exports.Prisma.MessageScalarFieldEnum = {
   id: 'id',
-  title: 'title',
   content: 'content',
-  published: 'published',
-  authorId: 'authorId'
+  role: 'role',
+  type: 'type',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  projectId: 'projectId'
+};
+
+exports.Prisma.FragmentScalarFieldEnum = {
+  id: 'id',
+  messageId: 'messageId',
+  sandboxUrl: 'sandboxUrl',
+  title: 'title',
+  files: 'files',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.UsageScalarFieldEnum = {
+  key: 'key',
+  points: 'points',
+  expire: 'expire'
 };
 
 exports.Prisma.SortOrder = {
@@ -139,20 +159,40 @@ exports.Prisma.SortOrder = {
   desc: 'desc'
 };
 
+exports.Prisma.JsonNullValueInput = {
+  JsonNull: Prisma.JsonNull
+};
+
 exports.Prisma.QueryMode = {
   default: 'default',
   insensitive: 'insensitive'
+};
+
+exports.Prisma.JsonNullValueFilter = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull,
+  AnyNull: Prisma.AnyNull
 };
 
 exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
 };
+exports.MessageRole = exports.$Enums.MessageRole = {
+  USER: 'USER',
+  ASSISTANT: 'ASSISTANT'
+};
 
+exports.MessageType = exports.$Enums.MessageType = {
+  RESULT: 'RESULT',
+  ERROR: 'ERROR'
+};
 
 exports.Prisma.ModelName = {
-  User: 'User',
-  Post: 'Post'
+  Project: 'Project',
+  Message: 'Message',
+  Fragment: 'Fragment',
+  Usage: 'Usage'
 };
 
 /**
