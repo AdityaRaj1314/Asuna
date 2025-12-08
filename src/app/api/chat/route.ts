@@ -97,7 +97,7 @@ export async function POST(req: Request) {
 
         // Get the Gemini model with system instruction
         const model = genAI.getGenerativeModel({
-            model: "gemini-1.5-flash",
+            model: "gemini-2.0-flash-exp",
             systemInstruction: SYSTEM_PROMPT,
             safetySettings: [
                 { category: HarmCategory.HARM_CATEGORY_HARASSMENT, threshold: HarmBlockThreshold.BLOCK_NONE },
